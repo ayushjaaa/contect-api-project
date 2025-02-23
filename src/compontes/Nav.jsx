@@ -4,13 +4,14 @@ import { Link } from "react-router-dom";
 
 const Nav = () => {
   const { products } = useContext(ProductContext);
-
+const [filterdProducts, setfilterdProducts] = useState()
   // Ensure products exist before reducing
   let distinct_category = products
     ? [...new Set(products.map((product) => product.category))]
     : [];
 
-  console.log(distinct_category);
+  // console.log(distinct_category);
+  
 
   return (
     <div className="w-64 bg-gray-100 p-4 border-r">

@@ -1,12 +1,33 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Nav from './nav'
-import {Link} from 'react-router-dom'
-import {useContext} from 'react'
+import {Link,useLocation} from 'react-router-dom'
+import {useContext,useState} from 'react'
 import { ProductContext } from '../utils/Context'
 import Loading from './Loading'
+import axios from 'axios'
+
 const Home = () => {
- const {products} =   useContext(ProductContext)
- console.log(products)
+//   const{products}  =  useContext(ProductContext)
+    const [filterProducts, setfilterProducts] = useState()
+ const {products} = useContext(ProductContext)
+const {search} = useLocation()
+ const category = decodeURIComponent(search.split("=")[1]);
+ 
+//  console.log(category)
+ const getproductcategory = async () =>{
+    try{
+const {data} = await axios.get(`/products/category/${category}`)
+    }
+    catch(error){
+console.log(error)
+    }
+ }
+//  console.log(products)
+useEffect(() => {
+  if(!filterProducts) setfilterProducts(products)
+    if(category != "undefind") getproductcategory()
+}, [])
+
   return (
     <div>
          <div className="flex h-screen">
@@ -18,7 +39,7 @@ const Home = () => {
     {products ? products.map((elem,index)=>{
         return(
             <div>
-                  <Link key={products.id} to={`/details/${elem.id}`} className="border rounded overflow-hidden shadow-md">
+                  <Link  key={elem.id} to={`/category/${elem.id}`} className="border rounded overflow-hidden shadow-md">
         <img 
           src={elem.image} 
           alt="Product" 
